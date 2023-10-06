@@ -1,0 +1,51 @@
+import pygame
+import sys
+pygame.init()
+screen_width = 800
+screen_height = 600
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("Main Menu")
+class Button:
+    def __init__(self, x, y, width, height, text, action=None):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.text = text
+        self.action = action
+
+    def draw(self):
+        pygame.draw.rect(screen, (200, 200, 200), self.rect)
+        font = pygame.font.Font(None, 36)
+        text = font.render(self.text, True, (0, 0, 0))
+        screen.blit(text, (self.rect.centerx - text.get_width() // 2, self.rect.centery - text.get_height() // 2))
+
+def start_game():
+    # Add code to start the game here
+    print("Starting the game!")
+
+def open_options():
+    # Add code to open options here
+    print("Opening options...")
+
+def quit_game():
+    pygame.quit()
+    sys.exit()
+play_button = Button(300, 200, 200, 50, "Play", start_game)
+options_button = Button(300, 300, 200, 50, "Options", open_options)
+exit_button = Button(300, 400, 200, 50, "Exit", quit_game)
+buttons = [play_button, options_button, exit_button]
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+    for button in buttons:
+        if button.rect.collidepoint(pygame.mouse.get_pos()):
+            if pygame.mouse.get_pressed()[0]:
+                button.action()
+
+    screen.fill((255, 255, 255))
+    for button in buttons:
+        button.draw()
+
+    pygame.display.flip()
